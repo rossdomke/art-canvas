@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Lunch Box Art</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="favicon.png" sizes="any">
+  <link rel="stylesheet" type="text/css" media="screen" href="art.css">
+  <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"
+    integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
+  <script src="ColorPallette.js"></script>
+  <script src="LunchBox.js"></script>
+</head>
+
+<body style="padding: 0; margin: 0; overflow: hidden;" onload="drawLunchBox()">
+  <div class="controls" >
+    <button onclick="activeColor = new ColorPallette(randomColor(colors), randomColor(ColorMode)); drawLunchBox()">Clr</button>
+  </div>
+  <canvas id="art" onclick=""></canvas>
+
+</body>
+
+</html>
+<script>
+  let colors = {
+    bright: ["#eac435", "#345995", "#fb4d3d", "#20fc8f", "#ca1551"],
+    purp: ["#211a1d", "#6320ee", "#8075ff", "#f8f0fb", "#cad5ca"],
+    rainbow: ["#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#8B00FF"],
+    drab: ["#D5573B", "#885053", "#777DA7", "#94C9A9", "#C6ECAE"],
+    mintPink: ["#173753", "#00fddc", "#fd3e81", "#30343f", "#0d1321"],
+    brad: ["#ED4364", "#FFECBB"],
+    lunchBox: ["#FFEDC9", "#C93239", "#2BBF93", "#253A34"],
+  };
+  var randomColor = function (colorsObj) {
+    var keys = Object.keys(colorsObj)
+    return colorsObj[keys[keys.length * Math.random() << 0]];
+  };
+  
+  let activeColor = new ColorPallette(colors.lunchBox, randomColor(ColorMode));
+
+  function drawLunchBox() {
+    console.log(activeColor._mode);
+    let lunchBox = new LunchBox("art", window.innerWidth, window.innerHeight);
+    lunchBox.draw(activeColor);
+  }
+  window.onresize = drawLunchBox;
+</script>
