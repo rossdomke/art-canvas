@@ -12,11 +12,12 @@
     integrity="sha256-7/yoZS3548fXSRXqc/xYzjsmuW3sFKzuvOCHd06Pmps=" crossorigin="anonymous"></script>
   <script src="ColorPallette.js"></script>
   <script src="LunchBox.js"></script>
+  <script src="SierpinskiTriangle.js"></script>
 </head>
 
-<body style="padding: 0; margin: 0; overflow: hidden;" onload="drawLunchBox()">
-  <div class="controls" >
-    <button onclick="activeColor = new ColorPallette(randomColor(colors), randomColor(ColorMode)); drawLunchBox()">Clr</button>
+<body style="padding: 0; margin: 0; overflow: hidden;" onload="setup()">
+  <div class="controls">
+    <button onclick="activeColor = new ColorPallette(randomObj(colors), randomObj(ColorMode)); draw();">Clr</button>
   </div>
   <canvas id="art" onclick=""></canvas>
 
@@ -33,17 +34,38 @@
     brad: ["#ED4364", "#FFECBB"],
     lunchBox: ["#FFEDC9", "#C93239", "#2BBF93", "#253A34"],
   };
-  var randomColor = function (colorsObj) {
-    var keys = Object.keys(colorsObj)
-    return colorsObj[keys[keys.length * Math.random() << 0]];
+  var randomObj = function (objs) {
+    var keys = Object.keys(objs)
+    return objs[keys[keys.length * Math.random() << 0]];
   };
-  
-  let activeColor = new ColorPallette(colors.lunchBox, randomColor(ColorMode));
+
+  let activeColor = new ColorPallette(colors.lunchBox, randomObj(ColorMode));
 
   function drawLunchBox() {
-    console.log(activeColor._mode);
     let lunchBox = new LunchBox("art", window.innerWidth, window.innerHeight);
     lunchBox.draw(activeColor);
   }
-  window.onresize = drawLunchBox;
+
+  function drawSerpinskiTri() {
+    let st = new SierpinskiTri("art", window.innerWidth, window.innerHeight, activeColor);
+    activeColor.setMode(randomObj({a: ColorMode.GINDEX, b: ColorMode.RANDOM}));
+    st.draw(activeColor);
+  }
+
+  var activeProject = "triangle";
+
+  function draw() {
+    console.log('draw');
+    if (activeProject === "lunch-box") {
+      drawLunchBox();
+    } else {
+      drawSerpinskiTri();
+    }
+  }
+
+  function setup() {
+    window.onresize = draw;
+    draw();
+    // window.requestAnimationFrame(draw);
+  }
 </script>
